@@ -1,0 +1,44 @@
+version: "3.5"
+
+x-volumes:
+  &default-volumes
+    volumes:
+      - ./app:/app
+
+x-environment:
+  &nginx-environment
+    NGINX_PORT: ${NGINX_PORT:-8080}
+    NGINX_DEFAULT_EXPIRES: ${NGINX_DEFAULT_EXPIRES:-2628001s}
+    NGINX_FASTCGI_PASS: ${NGINX_FASTCGI_PASS:-php}
+
+volumes:
+  app: {}
+
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.nginx
+    image: pandabox/nginx
+    ports:
+      - 8888:8080
+    <<: *default-volumes
+    environment:
+      <<: *nginx-environment
+
+  php:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.php
+    image: pandabox/php
+    <<: *default-volumes
+
+  postgres:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.postgres
+    image: pandabox/postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
