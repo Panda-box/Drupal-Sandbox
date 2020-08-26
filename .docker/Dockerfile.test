@@ -1,5 +1,5 @@
 FROM pandabox/php
 
-WORKDIR /app
+WORKDIR /app/web
 
 ENV WEBROOT=web
