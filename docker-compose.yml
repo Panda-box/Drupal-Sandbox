@@ -3,7 +3,7 @@ version: "3.5"
 x-volumes:
   &default-volumes
     volumes:
-      - ./app:/app
+      - files:/app/web/sites/default/files
 
 x-environment:
   &nginx-environment
@@ -12,9 +12,16 @@ x-environment:
     NGINX_FASTCGI_PASS: ${NGINX_FASTCGI_PASS:-php}
 
 volumes:
-  app: {}
+  files: {}
 
 services:
+
+  cli:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.cli
+    image: pandabox/cli
+    <<: *default-volumes
 
   nginx:
     build:
@@ -26,6 +33,8 @@ services:
     <<: *default-volumes
     environment:
       <<: *nginx-environment
+    depends_on:
+      - cli
 
   php:
     build:
@@ -33,6 +42,8 @@ services:
       dockerfile: .docker/Dockerfile.php
     image: pandabox/php
     <<: *default-volumes
+    depends_on:
+      - cli
 
   mysql:
     build:
@@ -58,6 +69,8 @@ services:
       context: .
       dockerfile: .docker/Dockerfile.test
     image: pandabox/test
+    <<: *default-volumes
     depends_on:
+      - nginx
       - php
       - mysql

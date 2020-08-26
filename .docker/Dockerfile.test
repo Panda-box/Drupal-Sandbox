@@ -1,15 +1,5 @@
-FROM composer:2 as composer
 FROM pandabox/php
 
-RUN apk add --no-cache \
-    git \
-    nano \
-    htop
+WORKDIR /app
 
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
-COPY app /app
-
-WORKDIR /app/web
-
-ENV COMPOSER_MEMORY_LIMIT=-1
-RUN composer --profile install --no-dev && composer clearcache
+ENV WEBROOT=web

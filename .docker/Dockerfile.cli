@@ -1,15 +1,18 @@
-FROM pandabox/cli as cli
+FROM composer:2 as composer
 FROM php:7.4-fpm-alpine
 
 RUN apk add --no-cache \
+    git \
     freetype-dev \
     libjpeg-turbo-dev \
     libpng-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd bcmath
 
-COPY --from=cli /app /app
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY app /app
 
-WORKDIR /app
+WORKDIR /app/web
 
-ENV WEBROOT=web
+ENV COMPOSER_MEMORY_LIMIT=-1
+RUN composer --profile install && composer clearcache

@@ -33,3 +33,9 @@ commands:
   logs:
     usage: Show Docker logs.
     cmd: docker-compose logs "$@"
+
+  test:full:
+    usage: Run full tests.
+    cmd: |
+      docker-compose exec -T test composer install
+      docker-compose exec -T test php core/scripts/run-tests.sh --php /usr/local/bin/php --sqlite /tmp/drupal/test.sqlite --dburl mysql://root:root@mysql/drupal --url http://nginx:8080/ --all --color --verbose
