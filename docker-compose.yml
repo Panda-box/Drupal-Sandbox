@@ -52,3 +52,12 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
+
+  test:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.test
+    image: pandabox/test
+    depends_on:
+      - php
+      - mysql
