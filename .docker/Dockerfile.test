@@ -1,4 +1,4 @@
-FROM pandabox/php
+FROM pandabox/cli
 
 WORKDIR /app/web
 
