@@ -6,7 +6,8 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libpng-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd bcmath
+    && docker-php-ext-install -j$(nproc) gd bcmath pdo_mysql \
+    && docker-php-ext-enable pdo_mysql
 
 COPY --from=cli /app /app
 
