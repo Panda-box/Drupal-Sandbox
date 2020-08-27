@@ -10,3 +10,13 @@ A Sandbox to test the Drupal core by using docker compose.
 * Built-in Drupal default test
 * Composer 2
 * Ahoy
+
+## Build and Run
+
+You need to copy `.env.default` to `.env` and modify, then run
+
+```
+ahoy build
+```
+
+The site will be availalbe at `http://localhost:8888`
