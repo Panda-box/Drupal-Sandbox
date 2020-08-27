@@ -44,5 +44,5 @@ commands:
       --php /usr/local/bin/php \
       --sqlite /tmp/drupal/test.sqlite \
       --dburl mysql://root:root@mysql/drupal \
-      --url http://localhost:8888 \
+      --url http://nginx:8080 \
       --all
